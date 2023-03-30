@@ -20,6 +20,7 @@ pipeline {
             steps{
                 sh "echo pushing to repo"
             }
+        }
         stage("Clean") {
             steps{
                 sh "docker rmi ${imageId}"
