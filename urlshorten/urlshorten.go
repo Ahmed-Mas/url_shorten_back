@@ -1,47 +1,44 @@
 package urlshorten
 
 import (
+	"log"
 	"math/rand"
 	"net/url"
 )
 
 const validUrlChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
-const redirectURL = "https://shorten.llamaherd.net/v1/short/"
 
-type UrlHolder struct {
-	LongURL  string
-	ShortURL string
-}
-
-func (holder *UrlHolder) cleanURL() error {
-	validatedURL, err := url.ParseRequestURI(holder.LongURL)
+func cleanURL(longURL string) (string, error) {
+	log.Println("cleaning url")
+	validatedURL, err := url.ParseRequestURI(longURL)
 	if err != nil {
-		validatedURL, err = url.ParseRequestURI("https://" + holder.LongURL)
+		validatedURL, err = url.ParseRequestURI("https://" + longURL)
 		if err != nil {
-			return err
+			return "", err
 		}
 	}
-
-	holder.LongURL = validatedURL.String()
-	return nil
+	log.Println("url clean")
+	return validatedURL.String(), nil
 }
 
-func (holder *UrlHolder) shortenHelper() {
+func shortenHelper(longUrl string) string {
 	newUrl := []byte{}
-	for i := 0; i < 20; i += 1 {
+	for i := 0; i < 10; i += 1 {
 		idx := rand.Intn(61)
 		newUrl = append(newUrl, []byte(validUrlChars)[idx])
 	}
 
-	holder.ShortURL = redirectURL + string(newUrl)
+	return string(newUrl)
 }
 
-func (holder *UrlHolder) ShortenURL() error {
-	err := holder.cleanURL()
+func ShortenURL(longURL string) (string, error) {
+	log.Printf("shortening long url: %s\n", longURL)
+	longURL, err := cleanURL(longURL)
 	if err != nil {
-		return err
+		return "", err
 	}
 
-	holder.shortenHelper()
-	return nil
+	shortURL := shortenHelper(longURL)
+	log.Printf("generated short url: %s\n", shortURL)
+	return shortURL, nil
 }

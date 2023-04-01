@@ -6,16 +6,13 @@ import (
 )
 
 func testCleanHelper(longURL, expected string) error {
-	holder := UrlHolder{
-		LongURL: longURL,
-	}
-	err := holder.cleanURL()
+	cleanedURL, err := cleanURL(longURL)
 	if err != nil {
 		return fmt.Errorf("couldnt validate url: %v", err)
 	}
 
-	if holder.LongURL != expected {
-		return fmt.Errorf("url not clean:\n\texpected:%s\n\tgot:%s", expected, holder.LongURL)
+	if cleanedURL != expected {
+		return fmt.Errorf("url not clean:\n\texpected:%s\n\tgot:%s", expected, cleanedURL)
 	}
 	return nil
 }

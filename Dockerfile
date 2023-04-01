@@ -10,5 +10,6 @@ RUN go build /app
 
 FROM alpine:latest
 WORKDIR /app
+EXPOSE 10000
 COPY --from=build /app/url_shorten_back .
-CMD ["/app/url_shorten_back"]
+ENTRYPOINT ["/app/url_shorten_back"]
