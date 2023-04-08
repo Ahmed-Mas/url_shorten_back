@@ -1,4 +1,4 @@
-package urlshorten
+package server
 
 import (
 	"log"
