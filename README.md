@@ -18,5 +18,46 @@ to-do:
 
 issues:
 - code separation of concerns isnt there yet
-    - need to break out like so: storage <-> core-app <-> server <-> user
+    - need to break out like so: storage <-> core-app <-> serializer <-> server <-> user
     - ^ this means having a redis pkg, core-app pkg, server pkg
+
+Lets break down potential improvements to the code:
+- core-app:
+    - core-app struct:
+        - connection to redis
+    - methods:
+        - generate short url
+        - store short+long url
+        - retrieve long url using short url
+    - input/output struct:
+        - long_url
+        - short_url
+        - timestamp
+    - using 1 struct as input/output keeps things simple and makes it so it only 
+
+- redis storage:
+    - redis struct
+        - redis client
+    - methods:
+        - store short+long url
+        - retrueve long url using short url
+    
+    - input/output:
+        - long_url
+        - short_url
+        - timestamp
+
+- serializer:
+    - maybe a serializer as a step between server and core-app would be useful
+    - turns incoming json into core-app struct
+    - methods:
+        - Encode core-app struct into json bytes
+        - Decode json bytes into core-app struct
+
+- server:
+    - router:
+        - GET:
+            - redirects to long url
+        - POST:
+            - generates short url
+    
