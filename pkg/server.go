@@ -1,10 +1,9 @@
-package server
+package pkg
 
 import (
 	"log"
 	"net/http"
 
-	"github.com/Ahmed-Mas/url_shorten_back/urlshorten"
 	"github.com/gin-gonic/gin"
 )
 
@@ -33,7 +32,7 @@ func GenerateShort(c *gin.Context) {
 	var holder tempURL
 	c.ShouldBind(&holder)
 
-	shortURL := urlshorten.ShortenURL()
+	shortURL := ShortenURL()
 	_ = redis.PublishURL(shortURL, holder.TempURL)
 
 	log.Println("returning shortened url")
