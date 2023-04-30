@@ -12,6 +12,11 @@ current capabilities:
 to-do:
 - add redis as the "short:long" store
 - add ttl to each generated short url
-- allow users to choose short url
-- allow users to choose url ttl
-- allow users to place number limits on short url accesses
+- allow users to choose short url (some char limit)
+- allow users to choose url ttl (some max ttl)
+- allow users to place number limits on short url accesses (1+ accesses, with 0 being unlimited)
+
+issues:
+- code separation of concerns isnt there yet
+    - need to break out like so: storage <-> core-app <-> server <-> user
+    - ^ this means having a redis pkg, core-app pkg, server pkg
